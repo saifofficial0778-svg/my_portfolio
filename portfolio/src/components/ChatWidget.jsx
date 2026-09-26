@@ -44,15 +44,23 @@ export default function ChatWidget() {
     setInput('')
     setIsLoading(true)
 
+    setMessages((prev) => [...prev, { role: 'assistant', content: '' }])
+
     try {
-      // The backend only accepts the current question (see chatApi.js) —
-      // it has no server-side memory of earlier turns.
-      const answer = await sendChatMessage(text)
-      setMessages((prev) => [...prev, { role: 'assistant', content: answer }])
+      await sendChatMessage(text, (chunk) => {
+        setMessages((prev) => {
+          const updated = [...prev]
+          updated[updated.length - 1] = {
+            role: 'assistant',
+            content: updated[updated.length - 1].content + chunk,
+          }
+          return updated
+        })
+      })
     } catch (err) {
       const notConfigured = err.message === 'CHAT_API_NOT_CONFIGURED'
       setMessages((prev) => [
-        ...prev,
+        ...prev.slice(0, -1),
         {
           role: 'error',
           content: notConfigured
@@ -125,26 +133,32 @@ export default function ChatWidget() {
 
             {/* Messages */}
             <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
-              {messages.map((m, i) => (
-                <div
-                  key={i}
-                  className={
-                    m.role === 'user'
-                      ? 'chat-bubble-user'
-                      : m.role === 'error'
-                        ? 'chat-bubble-error'
-                        : 'chat-bubble-bot'
-                  }
-                >
-                  {m.content}
-                </div>
-              ))}
-              {isLoading && (
-                <div className="chat-bubble-bot flex items-center gap-2">
-                  <Loader2 size={14} className="animate-spin" />
-                  <span>Thinking…</span>
-                </div>
-              )}
+              {messages.map((m, i) => {
+                const isLastEmptyAssistant =
+                  m.role === 'assistant' && m.content === '' && i === messages.length - 1
+
+                return (
+                  <div
+                    key={i}
+                    className={
+                      m.role === 'user'
+                        ? 'chat-bubble-user'
+                        : m.role === 'error'
+                          ? 'chat-bubble-error'
+                          : 'chat-bubble-bot'
+                    }
+                  >
+                    {isLastEmptyAssistant ? (
+                      <span className="flex items-center gap-2">
+                        <Loader2 size={14} className="animate-spin" />
+                        <span>Thinking…</span>
+                      </span>
+                    ) : (
+                      m.content
+                    )}
+                  </div>
+                )
+              })}
               <div ref={endRef} />
             </div>
 
