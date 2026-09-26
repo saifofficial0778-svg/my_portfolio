@@ -45,7 +45,6 @@
 
   color-scheme: light;
 }
-
 * {
   border-color: var(--color-border);
 }
@@ -54,11 +53,7 @@ html {
   scroll-behavior: smooth;
 }
 
-html,
-body {
-  /* Safety net: nothing in this layout should need to scroll sideways.
-     Guards against any future long/unbroken string or decorative element
-     accidentally widening the page. */
+html {
   overflow-x: hidden;
 }
 
@@ -80,6 +75,7 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.3s ease, color 0.3s ease;
+  
 }
 
 /* Lets borders, surfaces, and icons fade between themes instead of
