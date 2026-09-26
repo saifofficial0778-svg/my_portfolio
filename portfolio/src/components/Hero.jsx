@@ -119,7 +119,7 @@ export default function Hero() {
                   title={label}
                   className="icon-link"
                 >
-                  <Icon size={18} strokeWidth={2} />
+                  <Icon size={18} strokeWidth={2} aria-hidden="true" />
                 </a>
               ))}
             </motion.div>

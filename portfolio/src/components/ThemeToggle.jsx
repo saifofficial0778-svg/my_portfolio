@@ -9,6 +9,7 @@ export default function ThemeToggle() {
 
   return (
     <button
+      type="button"
       onClick={toggleTheme}
       aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
       className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg border transition-colors duration-200"
@@ -24,9 +25,9 @@ export default function ThemeToggle() {
           className="flex items-center justify-center"
         >
           {isDark ? (
-            <Sun size={16} strokeWidth={2} style={{ color: 'var(--color-ink-muted)' }} />
+            <Sun size={16} strokeWidth={2} aria-hidden="true" style={{ color: 'var(--color-ink-muted)' }} />
           ) : (
-            <Moon size={16} strokeWidth={2} style={{ color: 'var(--color-ink-muted)' }} />
+            <Moon size={16} strokeWidth={2} aria-hidden="true" style={{ color: 'var(--color-ink-muted)' }} />
           )}
         </motion.span>
       </AnimatePresence>

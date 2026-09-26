@@ -39,7 +39,7 @@ export default function Footer() {
                 title={label}
                 className="icon-link"
               >
-                <Icon size={16} strokeWidth={2} />
+                <Icon size={16} strokeWidth={2} aria-hidden="true" />
               </a>
             )
           })}

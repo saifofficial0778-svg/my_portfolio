@@ -53,7 +53,7 @@ export default function About() {
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
                 style={{ backgroundColor: 'var(--color-surface-raised)' }}
               >
-                <Icon size={16} style={{ color: 'var(--color-violet-soft)' }} />
+                <Icon size={16} aria-hidden="true" style={{ color: 'var(--color-violet-soft)' }} />
               </span>
               <p className="text-sm md:text-[0.95rem] pt-2" style={{ color: 'var(--color-ink)' }}>
                 {text}

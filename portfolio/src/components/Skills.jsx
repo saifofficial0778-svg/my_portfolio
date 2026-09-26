@@ -45,7 +45,7 @@ export default function Skills() {
           {SKILL_GROUPS.map(({ title, Icon, items }) => (
             <motion.div key={title} variants={fadeUp} className="surface-card p-6">
               <div className="flex items-center gap-2.5 mb-4">
-                <Icon size={18} style={{ color: 'var(--color-violet-soft)' }} />
+                <Icon size={18} aria-hidden="true" style={{ color: 'var(--color-violet-soft)' }} />
                 <h3 className="font-display text-base font-semibold" style={{ color: 'var(--color-ink)' }}>
                   {title}
                 </h3>

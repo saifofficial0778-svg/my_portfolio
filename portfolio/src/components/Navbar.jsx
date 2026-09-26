@@ -18,6 +18,7 @@ export default function Navbar() {
   const [activeId, setActiveId] = useState('home')
   const shouldReduceMotion = useReducedMotion()
   const panelRef = useRef(null)
+  const menuButtonRef = useRef(null)
 
   // Scroll-spy: watches whichever nav-target sections currently exist in the
   // DOM. Sections added in later phases (#about, #skills, etc.) are picked
@@ -46,7 +47,12 @@ export default function Navbar() {
     if (!isOpen) return
 
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setIsOpen(false)
+      if (e.key === 'Escape') {
+        setIsOpen(false)
+        // Escape is keyboard-only by definition, so it's always safe (and
+        // expected) to hand focus back to the control that opened the menu.
+        menuButtonRef.current?.focus()
+      }
     }
     document.addEventListener('keydown', handleKeyDown)
     document.body.style.overflow = 'hidden'
@@ -58,6 +64,14 @@ export default function Navbar() {
   }, [isOpen])
 
   const handleLinkClick = () => setIsOpen(false)
+
+  // Move keyboard focus into the panel as soon as it opens, instead of
+  // leaving it stranded on the (now visually relocated) toggle button.
+  useEffect(() => {
+    if (isOpen) {
+      panelRef.current?.querySelector('a')?.focus()
+    }
+  }, [isOpen])
 
   return (
     <header
@@ -112,6 +126,8 @@ export default function Navbar() {
         <div className="flex items-center gap-2 md:hidden">
           <ThemeToggle />
           <button
+            ref={menuButtonRef}
+            type="button"
             onClick={() => setIsOpen((prev) => !prev)}
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isOpen}
@@ -129,9 +145,9 @@ export default function Navbar() {
                 className="flex items-center justify-center"
               >
                 {isOpen ? (
-                  <X size={18} style={{ color: 'var(--color-ink)' }} />
+                  <X size={18} aria-hidden="true" style={{ color: 'var(--color-ink)' }} />
                 ) : (
-                  <Menu size={18} style={{ color: 'var(--color-ink)' }} />
+                  <Menu size={18} aria-hidden="true" style={{ color: 'var(--color-ink)' }} />
                 )}
               </motion.span>
             </AnimatePresence>

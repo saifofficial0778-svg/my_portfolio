@@ -54,6 +54,14 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
+body {
+  /* Safety net: nothing in this layout should need to scroll sideways.
+     Guards against any future long/unbroken string or decorative element
+     accidentally widening the page. */
+  overflow-x: hidden;
+}
+
 /* Offsets anchor-scroll targets so the sticky nav doesn't cover the
    section heading. Applies to every top-level section automatically. */
 section[id] {
@@ -97,11 +105,13 @@ body {
   }
 }
 
-/* Visible, on-brand keyboard focus ring everywhere */
+/* Visible, on-brand keyboard focus ring everywhere. Deliberately doesn't
+   set border-radius here — browsers already shape the outline to match
+   each element's own radius, and forcing one here previously overrode
+   the real corner radius of buttons/cards/pills while focused. */
 :focus-visible {
   outline: 2px solid var(--color-violet-soft);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
 /* Selection color matches accent system */

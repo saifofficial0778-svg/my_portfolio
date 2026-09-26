@@ -15,6 +15,9 @@ export default function ProjectCard({ project }) {
   const restPoints = points.slice(PREVIEW_COUNT)
   const hasMore = restPoints.length > 0
   const hasLinks = Boolean(githubUrl || liveUrl)
+  // Stable id for the expandable region so the toggle button can reference
+  // it with aria-controls (screen readers announce what the button reveals).
+  const detailsId = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-details`
 
   return (
     <motion.article
@@ -71,6 +74,7 @@ export default function ProjectCard({ project }) {
         <AnimatePresence initial={false}>
           {expanded && (
             <motion.ul
+              id={detailsId}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -94,14 +98,17 @@ export default function ProjectCard({ project }) {
 
       {hasMore && (
         <button
+          type="button"
           onClick={() => setExpanded((prev) => !prev)}
           aria-expanded={expanded}
+          aria-controls={detailsId}
           className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium self-start transition-colors duration-200"
           style={{ color: 'var(--color-violet-soft)' }}
         >
           {expanded ? 'Show less' : 'View details'}
           <ChevronDown
             size={15}
+            aria-hidden="true"
             className="transition-transform duration-200"
             style={{ transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
           />
@@ -119,7 +126,7 @@ export default function ProjectCard({ project }) {
               aria-label={`${title} on GitHub`}
               title="View source on GitHub"
             >
-              <Github size={17} />
+              <Github size={17} aria-hidden="true" />
             </a>
           )}
           {liveUrl && (
@@ -131,7 +138,7 @@ export default function ProjectCard({ project }) {
               aria-label={`${title} live demo`}
               title="View live demo"
             >
-              <ExternalLink size={17} />
+              <ExternalLink size={17} aria-hidden="true" />
             </a>
           )}
         </div>

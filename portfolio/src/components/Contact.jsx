@@ -7,13 +7,22 @@ import LeetCodeIcon from './icons/LeetCodeIcon'
 import { profile } from '../data/resume'
 import { getFadeUpVariants, getStaggerContainer } from '../lib/motion'
 
-// Sourced straight from resume.js — add/remove a link there and it flows
-// through here automatically.
+// Sourced straight from resume.js — add/remove a link there and both the
+// href *and* the displayed handle flow through here automatically.
+const getHandle = (url) => {
+  try {
+    const path = new URL(url).pathname.replace(/\/+$/, '')
+    return path.split('/').filter(Boolean).pop() || url
+  } catch {
+    return url
+  }
+}
+
 const CONTACT_LINKS = [
   { label: 'Email', value: profile.email, href: `mailto:${profile.email}`, Icon: Mail },
-  { label: 'LinkedIn', value: 'mohd-saif-svg', href: profile.links.linkedin, Icon: Linkedin },
-  { label: 'GitHub', value: 'saifofficial0778-svg', href: profile.links.github, Icon: Github },
-  { label: 'LeetCode', value: 'MOSAIF1', href: profile.links.leetcode, Icon: LeetCodeIcon },
+  { label: 'LinkedIn', value: getHandle(profile.links.linkedin), href: profile.links.linkedin, Icon: Linkedin },
+  { label: 'GitHub', value: getHandle(profile.links.github), href: profile.links.github, Icon: Github },
+  { label: 'LeetCode', value: getHandle(profile.links.leetcode), href: profile.links.leetcode, Icon: LeetCodeIcon },
 ].filter((link) => Boolean(link.href))
 
 export default function Contact() {
@@ -75,13 +84,13 @@ export default function Contact() {
                     className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
                     style={{ backgroundColor: 'var(--color-surface-raised)' }}
                   >
-                    <Icon size={17} strokeWidth={2} style={{ color: 'var(--color-violet-soft)' }} />
+                    <Icon size={17} strokeWidth={2} aria-hidden="true" style={{ color: 'var(--color-violet-soft)' }} />
                   </span>
-                  <span>
+                  <span className="min-w-0">
                     <span className="block text-sm font-medium" style={{ color: 'var(--color-ink)' }}>
                       {label}
                     </span>
-                    <span className="block text-sm text-muted">{value}</span>
+                    <span className="block text-sm text-muted break-words">{value}</span>
                   </span>
                 </a>
               )
@@ -93,7 +102,7 @@ export default function Contact() {
         <motion.div variants={fadeUp} className="surface-card p-6 md:p-8">
           {sent ? (
             <div className="flex flex-col items-center justify-center text-center py-10">
-              <CheckCircle2 size={36} style={{ color: 'var(--color-violet-soft)' }} className="mb-4" />
+              <CheckCircle2 size={36} aria-hidden="true" style={{ color: 'var(--color-violet-soft)' }} className="mb-4" />
               <h3 className="font-display text-lg font-semibold mb-2" style={{ color: 'var(--color-ink)' }}>
                 Your email app should be open
               </h3>
@@ -118,7 +127,7 @@ export default function Contact() {
                   value={form.name}
                   onChange={handleChange}
                   placeholder="Your name"
-                  className="w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition-colors duration-200 focus:border-[var(--color-violet-soft)]"
+                  className="w-full rounded-lg border px-4 py-2.5 text-sm transition-colors duration-200 focus:border-[var(--color-violet-soft)]"
                   style={{ backgroundColor: 'var(--color-surface-raised)', borderColor: 'var(--color-border)', color: 'var(--color-ink)' }}
                 />
               </div>
@@ -135,7 +144,7 @@ export default function Contact() {
                   value={form.email}
                   onChange={handleChange}
                   placeholder="you@example.com"
-                  className="w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition-colors duration-200 focus:border-[var(--color-violet-soft)]"
+                  className="w-full rounded-lg border px-4 py-2.5 text-sm transition-colors duration-200 focus:border-[var(--color-violet-soft)]"
                   style={{ backgroundColor: 'var(--color-surface-raised)', borderColor: 'var(--color-border)', color: 'var(--color-ink)' }}
                 />
               </div>
@@ -152,20 +161,20 @@ export default function Contact() {
                   value={form.message}
                   onChange={handleChange}
                   placeholder="What are you looking to build or discuss?"
-                  className="w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition-colors duration-200 focus:border-[var(--color-violet-soft)] resize-none"
+                  className="w-full rounded-lg border px-4 py-2.5 text-sm transition-colors duration-200 focus:border-[var(--color-violet-soft)] resize-none"
                   style={{ backgroundColor: 'var(--color-surface-raised)', borderColor: 'var(--color-border)', color: 'var(--color-ink)' }}
                 />
               </div>
 
               <Button type="submit" variant="primary" className="w-full">
-                <Send size={16} />
+                <Send size={16} aria-hidden="true" />
                 Send via email
               </Button>
 
               <p className="text-xs text-muted text-center">
                 This opens your own email app with the message pre-filled — no data is stored or
                 sent to a server. Prefer to write directly?{' '}
-                <a href={`mailto:${profile.email}`} className="link-accent">
+                <a href={`mailto:${profile.email}`} className="link-accent break-words">
                   Email {profile.email}
                 </a>
                 .

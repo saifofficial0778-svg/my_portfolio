@@ -12,6 +12,26 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+    <script>
+      // Set the theme before React mounts / before first paint, so the page
+      // never flashes the wrong theme on load. Mirrors the logic in
+      // ThemeContext.jsx — keep the two in sync if that logic changes.
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme')
+          var theme =
+            saved === 'light' || saved === 'dark'
+              ? saved
+              : window.matchMedia('(prefers-color-scheme: light)').matches
+                ? 'light'
+                : 'dark'
+          document.documentElement.setAttribute('data-theme', theme)
+        } catch (e) {
+          // localStorage/matchMedia can throw in locked-down environments;
+          // fall back to the default dark theme already set in CSS.
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>
