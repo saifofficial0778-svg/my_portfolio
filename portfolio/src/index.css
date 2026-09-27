@@ -197,9 +197,9 @@ body {
     color: var(--color-ink);
   }
 
-  .text-muted {
-    color: var(--color-ink-muted);
-  }
+.text-muted {
+  color: var(--color-ink-muted) !important;
+}
 
   .link-accent {
     color: var(--color-violet-soft);
